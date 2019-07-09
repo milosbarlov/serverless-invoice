@@ -1,0 +1,22 @@
+export default {
+  element: null,
+  error: '',
+  zeroDecimalCurrencies: [
+    'BIF',
+    'CLP',
+    'DJF',
+    'GNF',
+    'JPY',
+    'KMF',
+    'KRW',
+    'MGA',
+    'PYG',
+    'RWF',
+    'UGX',
+    'VND',
+    'VUV',
+    'XAF',
+    'XOF',
+    'XPF',
+  ],
+};

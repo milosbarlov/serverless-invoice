@@ -12,9 +12,9 @@ yarn-debug.log*
 yarn-error.log*
 *.zip
 *.env
+*.yml
 template.yaml
 packaged.yaml
-/backend/lambda
 
 # Editor directories and files
 .idea
