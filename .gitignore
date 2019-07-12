@@ -15,6 +15,7 @@ yarn-error.log*
 *.yml
 template.yaml
 packaged.yaml
+Thumbs.db
 
 # Editor directories and files
 .idea
