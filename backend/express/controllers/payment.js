@@ -1,4 +1,7 @@
 const stripe = require('stripe')(process.env.SK_TEST);
+const chalk = require('chalk');
+
+const success = chalk.green;
 
 exports.getPayment = async (req, res, next) => {
   console.log('Getting payment...');
@@ -6,7 +9,7 @@ exports.getPayment = async (req, res, next) => {
   try {
     const charge = await stripe.charges.retrieve(req.params.id);
 
-    console.log('Found payment.');
+    console.log(success('Fetched payment.'));
     res.status(200).json(charge);
   } catch (error) {
     if (!error.statusCode) {
@@ -22,7 +25,7 @@ exports.updatePayment = async (req, res, next) => {
   try {
     const charge = await stripe.charges.update(req.params.id, req.body);
 
-    console.log('Updated payment.');
+    console.log(success('Updated payment.'));
     res.status(200).json(charge);
   } catch (error) {
     if (!error.statusCode) {
@@ -42,7 +45,7 @@ exports.refundPayment = async (req, res, next) => {
   try {
     const refund = await stripe.refunds.create(params);
 
-    console.log('Refunded payment.');
+    console.log(success('Refunded payment.'));
     res.status(201).json(refund);
   } catch (error) {
     if (!error.statusCode) {

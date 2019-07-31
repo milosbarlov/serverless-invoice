@@ -1,7 +1,10 @@
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 const stripe = require('stripe')(process.env.SK_TEST);
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
+const chalk = require('chalk');
+
+const success = chalk.green;
 
 exports.getCustomers = async (req, res, next) => {
   console.log('Getting customers...');
@@ -41,7 +44,7 @@ exports.getCustomers = async (req, res, next) => {
         });
       });
 
-    console.log('Found customers.');
+    console.log('Found customers...');
 
     if (filter) {
       data.customers = data.customers.filter(customer => {
@@ -81,7 +84,7 @@ exports.getCustomers = async (req, res, next) => {
       );
     }
 
-    console.log('Sent customers.');
+    console.log(success('Fetched customers.'));
     res.status(200).json(data);
   } catch (error) {
     if (!error.statusCode) {
@@ -96,6 +99,7 @@ exports.addCustomer = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
+    console.error(errors.array());
     const error = new Error('Invalid input.');
     error.statusCode = 422;
     throw error;
@@ -124,7 +128,7 @@ exports.addCustomer = async (req, res, next) => {
       },
     });
 
-    console.log('Added customer.');
+    console.log(success('Added customer.'));
     res.status(201).json(response);
   } catch (error) {
     if (!error.statusCode) {

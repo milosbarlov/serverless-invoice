@@ -1,6 +1,9 @@
 const stripe = require('stripe')(process.env.SK_TEST);
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 const _ = require('lodash');
+const chalk = require('chalk');
+
+const success = chalk.green;
 
 exports.getCustomer = async (req, res, next) => {
   console.log('Getting customer...');
@@ -41,7 +44,7 @@ exports.getCustomer = async (req, res, next) => {
       ])
     );
 
-    console.log('Sent customer.');
+    console.log(success('Fetched customer.'));
     res.status(200).json(data);
   } catch (error) {
     if (!error.statusCode) {
@@ -56,6 +59,7 @@ exports.updateCustomer = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
+    console.error(error.array());
     const error = new Error('Invalid input.');
     error.statusCode = 422;
     throw error;
@@ -64,7 +68,7 @@ exports.updateCustomer = async (req, res, next) => {
   try {
     const customer = await stripe.customers.update(req.params.id, req.body);
 
-    console.log('Updated customer.');
+    console.log(success('Updated customer.'));
     res.status(200).json(customer);
   } catch (error) {
     if (!error.statusCode) {
@@ -79,7 +83,7 @@ exports.deleteCustomer = async (req, res, next) => {
   try {
     const confirmation = await stripe.customers.del(req.params.id);
 
-    console.log('Deleted customer.');
+    console.log(success('Deleted customer.'));
     res.status(200).json(confirmation);
   } catch (error) {
     if (!error.statusCode) {

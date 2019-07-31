@@ -1,5 +1,8 @@
 const stripe = require('stripe')(process.env.SK_TEST);
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
+const chalk = require('chalk');
+
+const success = chalk.green;
 
 exports.updateCard = async (req, res, next) => {
   console.log('Updating card...');
@@ -7,6 +10,7 @@ exports.updateCard = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
+    console.error(errors.array());
     const error = new Error('Invalid input.');
     error.statusCode = 422;
     throw error;
@@ -19,7 +23,7 @@ exports.updateCard = async (req, res, next) => {
       req.body
     );
 
-    console.log('Updated card.');
+    console.log(success('Updated card.'));
     res.status(200).json(card);
   } catch (error) {
     if (!error.statusCode) {
@@ -32,21 +36,13 @@ exports.updateCard = async (req, res, next) => {
 exports.deleteCard = async (req, res, next) => {
   console.log('Deleting card...');
 
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    const error = new Error('Invalid input.');
-    error.statusCode = 422;
-    throw error;
-  }
-
   try {
     const card = await stripe.customers.deleteSource(
       req.params.id,
       req.params.card
     );
 
-    console.log('Deleted card.');
+    console.log(success('Deleted card.'));
     res.status(200).json(card);
   } catch (error) {
     if (!error.statusCode) {

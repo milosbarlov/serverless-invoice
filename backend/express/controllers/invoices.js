@@ -1,4 +1,7 @@
+const chalk = require('chalk');
 const Invoice = require('../models/invoice.js');
+
+const success = chalk.green;
 
 exports.getInvoices = async (req, res, next) => {
   console.log('Getting invoices...');
@@ -55,7 +58,7 @@ exports.getInvoices = async (req, res, next) => {
 
     const invoices = await query.exec();
 
-    console.log('Sent invoices.');
+    console.log(success('Fetched invoices.'));
     res.status(200).json({
       invoices,
       rowsNumber,
@@ -78,7 +81,7 @@ exports.getInvoice = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    console.log('Sent invoice.');
+    console.log(success('Fetched invoice.'));
     res.status(200).json(invoice);
   } catch (error) {
     if (!error.statusCode) {
@@ -114,7 +117,7 @@ exports.addInvoice = async (req, res, next) => {
     });
 
     await invoice.save();
-    console.log('Added invoice.');
+    console.log(success('Added invoice.'));
     res.status(201).json(invoice);
   } catch (error) {
     if (!error.statusCode) {
@@ -137,7 +140,7 @@ exports.updateInvoice = async (req, res, next) => {
 
     const result = await invoice.save();
 
-    console.log('Updated invoice.');
+    console.log(success('Updated invoice.'));
     res.status(200).json(result);
   } catch (error) {
     if (!error.statusCode) {
@@ -155,7 +158,7 @@ exports.deleteInvoice = async (req, res, next) => {
   try {
     const invoice = await Invoice.findByIdAndDelete(id);
 
-    console.log('Deleted invoice.');
+    console.log(success('Deleted invoice.'));
     res.status(200).json(invoice);
   } catch (error) {
     console.error(error);

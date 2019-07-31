@@ -1,8 +1,15 @@
 const stripe = require('stripe')(process.env.SK_TEST);
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
+const chalk = require('chalk');
+
+const success = chalk.green;
 
 exports.createSource = async (req, res, next) => {
-  console.log('Creating source...');
+  if (req.body.object === 'bank_account') {
+    console.log('Adding bank account...');
+  } else {
+    console.log('Creating source...');
+  }
 
   const errors = validationResult(req);
 
@@ -17,7 +24,7 @@ exports.createSource = async (req, res, next) => {
       source: req.body.token ? req.body.token : req.body,
     });
 
-    console.log('Created source.');
+    console.log(success('Created source.'));
     res.status(201).json(source);
   } catch (error) {
     if (!error.statusCode) {
@@ -33,15 +40,13 @@ exports.verifySource = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
+    console.error(error.array());
     const error = new Error('Invalid input.');
     error.statusCode = 422;
     throw error;
   }
 
-  const data = [
-    parseInt(req.body.deposits.first, 10),
-    parseInt(req.body.deposits.second, 10),
-  ];
+  const data = [req.body.deposits.first, req.body.deposits.second];
 
   try {
     const source = await stripe.customers.verifySource(
@@ -50,7 +55,7 @@ exports.verifySource = async (req, res, next) => {
       { amounts: data }
     );
 
-    console.log('Verified source.');
+    console.log(success('Verified source.'));
     res.status(200).json(source);
   } catch (error) {
     if (!error.statusCode) {
@@ -69,7 +74,7 @@ exports.deleteSource = async (req, res, next) => {
       req.params.bank
     );
 
-    console.log('Deleted source.');
+    console.log(success('Deleted source.'));
     res.status(200).json(source);
   } catch (error) {
     if (!error.statusCode) {

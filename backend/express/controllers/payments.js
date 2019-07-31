@@ -1,5 +1,8 @@
 const stripe = require('stripe')(process.env.SK_TEST);
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
+const chalk = require('chalk');
+
+const success = chalk.green;
 
 exports.getPayments = async (req, res, next) => {
   console.log('Getting payments...');
@@ -36,7 +39,7 @@ exports.getPayments = async (req, res, next) => {
         });
       });
 
-    console.log('Found payments.');
+    console.log('Found payments...');
 
     if (status.length > 0) {
       data.payments = data.payments.filter(payment =>
@@ -81,7 +84,7 @@ exports.getPayments = async (req, res, next) => {
       );
     }
 
-    console.log('Sent payments.');
+    console.log(success('Fetched payments.'));
     res.status(200).json(data);
   } catch (error) {
     if (!error.statusCode) {
@@ -96,6 +99,7 @@ exports.addPayment = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
+    console.error(errors.array());
     const error = new Error('Invalid input.');
     error.statusCode = 422;
     throw error;
@@ -104,7 +108,7 @@ exports.addPayment = async (req, res, next) => {
   try {
     const charge = await stripe.charges.create(req.body);
 
-    console.log('Found charge.');
+    console.log(success('Added payment.'));
     res.status(201).json(charge);
   } catch (error) {
     if (!error.statusCode) {
