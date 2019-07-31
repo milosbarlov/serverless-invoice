@@ -1,5 +1,5 @@
 const express = require('express');
-const { body } = require('express-validator/check');
+const { body } = require('express-validator');
 
 const router = express.Router();
 
@@ -11,8 +11,14 @@ router.get('/', paymentsController.getPayments);
 router.post(
   '/',
   [
-    body('amount').isLength({ max: 8 }),
-    body('currency').isLength({ min: 3, max: 3 }),
+    body('amount')
+      .isLength({ max: 8 })
+      .isInt()
+      .exists(),
+    body('currency').exists(),
+    body('receipt_email')
+      .isEmail()
+      .optional(),
   ],
   paymentsController.addPayment
 );
