@@ -18,7 +18,7 @@ app.use('/invoices', invoicesRouter);
 
 // Express error handler middleware
 app.use((error, req, res, next) => {
-  console.log(error);
+  console.error(error);
   const status = error.statusCode || 500;
   const { message } = error;
   res.status(status).json({ message });
