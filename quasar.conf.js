@@ -9,12 +9,7 @@ module.exports = function(ctx) {
     // --> boot files are part of "main.js"
     boot: [
       'axios',
-      'currency-formatter',
-      'error-handler',
-      'firebase',
       'fontawesome',
-      'moment',
-      'notify',
       'stripe',
       'vuelidate',
     ],
@@ -81,6 +76,7 @@ module.exports = function(ctx) {
         'QFooter',
         'QTabs',
         'QTab',
+        'QMarkupTable',
       ],
 
       directives: ['Ripple', 'ClosePopup'],
@@ -111,6 +107,7 @@ module.exports = function(ctx) {
         cfg.resolve.alias = {
           ...cfg.resolve.alias, // This adds the existing alias
           mixins: path.resolve(__dirname, './src/mixins'),
+          utils: path.resolve(__dirname, './src/utils'),
         };
       },
       env: ctx.dev
