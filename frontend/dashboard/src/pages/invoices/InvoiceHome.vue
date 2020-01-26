@@ -245,7 +245,7 @@ export default {
     Loading.show({
       message: 'Loading invoice...',
       spinner: QSpinner,
-      spinnerColor: 'light-blue',
+      spinnerColor: 'purple',
       sanitize: true,
     });
 

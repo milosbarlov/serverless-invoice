@@ -294,7 +294,7 @@ export default {
     Loading.show({
       message: 'Loading payment...',
       spinner: QSpinner,
-      spinnerColor: 'light-blue',
+      spinnerColor: 'purple',
       sanitize: true,
     });
 

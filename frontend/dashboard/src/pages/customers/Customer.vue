@@ -16,7 +16,7 @@ export default {
     Loading.show({
       message: 'Loading customer...',
       spinner: QSpinner,
-      spinnerColor: 'light-blue',
+      spinnerColor: 'purple',
       sanitize: true,
     });
 
