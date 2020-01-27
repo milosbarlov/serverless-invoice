@@ -1,7 +1,7 @@
 {
   "name": "express-app",
   "version": "1.0.0",
-  "description": "AWS serverless express app",
+  "description": "AWS serverless express app for Serverless Invoice",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js --exec babel-node",
@@ -11,30 +11,39 @@
   "jest": {
     "testEnvironment": "node"
   },
-  "author": "Kevin Chhay",
+  "author": "Kevin Chhay <25449974+Mirakurun@users.noreply.github.com>",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
+    "aws-sdk": "^2.578.0",
     "babel-jest": "^24.8.0",
     "env-cmd": "^9.0.3",
     "eslint": "=5.16.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-jest": "^23.0.4",
     "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.8.0",
     "nodemon": "^1.19.1",
+    "prettier": "^1.19.1",
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "chalk": "^2.4.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.1.1",
+    "handlebars": "^4.5.3",
+    "jsonwebtoken": "^8.5.1",
     "libphonenumber-js": "^1.7.21",
     "lodash": "^4.17.15",
+    "mjml": "^4.5.1",
     "mongoose": "^5.6.6",
-    "nanoid": "^2.0.3",
+    "nodemailer": "^6.3.1",
     "serverless-http": "^2.0.2",
     "stripe": "^7.5.0"
   },

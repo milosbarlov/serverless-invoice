@@ -3,7 +3,8 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: ['eslint:recommended', 'plugin:node/recommended'],
+  extends: ['eslint:recommended', 'plugin:node/recommended', 'plugin:prettier/recommended', 'plugin:jest/recommended'],
+  plugins: ['prettier', 'jest'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -15,6 +16,8 @@ module.exports = {
   rules: {
     'node/no-unsupported-features/es-syntax': 'off',
     'node/no-unpublished-require': 'off',
-    'no-console': 'off'
+    'no-console': 'off',
+
+    'prettier/prettier': ['error', { singleQuote: true, trailingComma: 'es5' }],
   },
 };
