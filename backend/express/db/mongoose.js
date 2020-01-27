@@ -7,6 +7,7 @@ mongoose
   .connect(process.env.DB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
+    useFindAndModify: false,
   })
   .then(() => console.log(success('Mongoose connection succeeded.')))
   .catch(error => console.error(error));
