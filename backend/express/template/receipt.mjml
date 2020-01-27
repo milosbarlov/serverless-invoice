@@ -1,0 +1,139 @@
+<mjml>
+  <mj-body background-color="lightgrey">
+    <mj-section background-color="#fafafa" padding-bottom="0">
+      <mj-column width="600px">
+        <mj-text color="#2b2b2b" font-size="24px" font-weight="700">
+          Receipt #{{receipt_number}}
+        </mj-text>
+        <mj-text color="#696969" font-size="20px" font-weight="700">
+          Invoice #{{number}}
+        </mj-text>
+        <mj-text color="#2b2b2b" padding-top="0">
+          Paid at: {{status_transitions.paid_at}}
+        </mj-text>
+        {{#if payment_method_details.card}}
+          <mj-text color="#2b2b2b" padding-top="0">
+            Payment method: {{capitalize payment_method_details.card.brand}} ending in {{payment_method_details.card.last4}}
+          </mj-text>
+        {{/if}}
+        <mj-text color="#2b2b2b" font-weight="700">
+          {{customer.name}}
+        </mj-text>
+        <mj-text color="#2b2b2b" padding-top="0">
+          {{customer.email}}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#fafafa" padding-top="0" padding-bottom="0">
+      <mj-column>
+        <mj-divider border-width="2px" border-style="dashed" border-color="lightgrey" />
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#fafafa" padding-top="0" padding-bottom="0">
+      <mj-group>
+        <mj-column width="75%">
+          {{#each lines}}
+            <mj-text color="#2b2b2b" font-weight="700">
+              {{this.description}} × {{this.quantity}} @ {{this.unit_amount}}
+            </mj-text>
+            {{#if item_discount}}
+              {{#ifEquals discount_type '$'}}
+                <mj-text color="#696969">
+                  {{this.item_discount}} off
+                </mj-text>
+              {{/ifEquals}}
+              {{#ifEquals discount_type '%'}}
+                <mj-text color="#696969">
+                  {{this.item_discount}}% off
+                </mj-text>
+              {{/ifEquals}}
+            {{/if}}
+          {{/each}}
+        </mj-column>
+        <mj-column width="25%">
+          {{#each lines}}
+            <mj-text align="right" color="#2b2b2b" font-weight="700">
+              {{this.amount}}
+            </mj-text>
+          {{/each}}
+        </mj-column>
+      </mj-group>
+    </mj-section>
+    <mj-section background-color="#fafafa" padding-top="0" padding-bottom="0">
+      <mj-column>
+        <mj-divider border-width="2px" border-style="solid" border-color="grey" />
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#fafafa" padding-top="0" padding-bottom="0">
+      <mj-group>
+        <mj-column>
+          <mj-text color="#2b2b2b">
+            Subtotal
+          </mj-text>
+          {{#if discount}}
+            <mj-text color="green">
+              Total Discount
+            </mj-text>
+          {{/if}}
+          {{#if shippable}}
+            <mj-text color="#2b2b2b">
+              Shipping
+            </mj-text>
+          {{/if}}
+        </mj-column>
+        <mj-column>
+          <mj-text align="right" color="#2b2b2b">
+            {{subtotal}}
+          </mj-text>
+          {{#if discount}}
+            <mj-text align="right" color="green">
+              -{{discount}}
+            </mj-text>
+          {{/if}}
+          {{#if shippable}}
+            {{#if shipping}}
+              <mj-text align="right" color="#2b2b2b">
+                {{shipping}}
+              </mj-text>
+            {{else}}
+              <mj-text align="right" color="green">
+                Free
+              </mj-text>
+            {{/if}}
+          {{/if}}
+        </mj-column>
+      </mj-group>
+    </mj-section>
+    <mj-section background-color="#fafafa" padding-top="0" padding-bottom="0">
+      <mj-column>
+        <mj-divider border-width="2px" border-style="solid" border-color="grey" />
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#fafafa" padding-top="0">
+      <mj-group>
+        <mj-column>
+          <mj-text color="#2b2b2b" font-size="18px" font-weight="700">
+            Amount paid
+          </mj-text>
+        </mj-column>
+        <mj-column>
+          <mj-text align="right" color="#2b2b2b" font-size="18px" font-weight="700">
+            {{amount_paid}}
+          </mj-text>
+        </mj-column>
+      </mj-group>
+    </mj-section>
+    <mj-section background-color="#333333">
+      <mj-column>
+        <mj-social font-size="16px" icon-size="32px" mode="vertical">
+          <mj-social-element background-color="#211F1F" color="#fafafa" name="github" href="https://github.com/Mirakurun/serverless-invoice">
+            Github
+          </mj-social-element>
+          <mj-social-element background-color="#0077b5" color="#fafafa" name="linkedin-noshare" href="https://www.linkedin.com/in/kevin-chhay/">
+            LinkedIn
+          </mj-social-element>
+        </mj-social>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
