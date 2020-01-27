@@ -4,37 +4,40 @@ const { body } = require('express-validator');
 const router = express.Router();
 
 const invoicesController = require('../controllers/invoices');
+const auth = require('../middleware/auth');
 
-router.get('/', invoicesController.getInvoices);
+router.get('/', auth, invoicesController.getInvoices);
 
 router.post(
   '/',
+  auth,
   [
-    body('amount_due')
-      .isInt()
-      .optional(),
     body('amount_paid')
       .isInt()
       .optional(),
-    body('currency').exists(),
     body('customer.email')
       .isEmail()
       .optional(),
     body('customer.id').exists(),
+    body('discount').isInt(),
     body('invoice_prefix')
       .exists()
       .isLength({ min: 3, max: 12 })
       .isAlphanumeric()
       .isUppercase()
       .trim(),
+    body('shipping').isInt(),
+    body('subtotal').isInt(),
+    body('total').isInt(),
   ],
   invoicesController.addInvoice
 );
 
-router.get('/:id', invoicesController.getInvoice);
+router.get('/:id', auth, invoicesController.getInvoice);
 
 router.put(
   '/:id',
+  auth,
   [
     body('invoice_prefix')
       .isLength({ min: 3, max: 12 })
@@ -46,6 +49,6 @@ router.put(
   invoicesController.updateInvoice
 );
 
-router.delete('/:id', invoicesController.deleteInvoice);
+router.delete('/:id', auth, invoicesController.deleteInvoice);
 
 module.exports = router;

@@ -7,11 +7,13 @@ const customersController = require('../controllers/customers');
 const customerController = require('../controllers/customer');
 const cardController = require('../controllers/card');
 const sourceController = require('../controllers/source');
+const auth = require('../middleware/auth');
 
-router.get('/', customersController.getCustomers);
+router.get('/', auth, customersController.getCustomers);
 
 router.post(
   '/',
+  auth,
   [
     body('email')
       .isEmail()
@@ -50,10 +52,11 @@ router.post(
   customersController.addCustomer
 );
 
-router.get('/:id', customerController.getCustomer);
+router.get('/:id', auth, customerController.getCustomer);
 
 router.put(
   '/:id',
+  auth,
   [
     body('email')
       .isEmail()
@@ -92,10 +95,11 @@ router.put(
   customerController.updateCustomer
 );
 
-router.delete('/:id', customerController.deleteCustomer);
+router.delete('/:id', auth, customerController.deleteCustomer);
 
 router.put(
   '/:id/cards/:card',
+  auth,
   [
     body('exp_month')
       .isInt({ min: 1, max: 12, allow_leading_zeroes: true })
@@ -108,10 +112,11 @@ router.put(
   cardController.updateCard
 );
 
-router.delete('/:id/cards/:card', cardController.deleteCard);
+router.delete('/:id/cards/:card', auth, cardController.deleteCard);
 
 router.post(
   '/:id/source',
+  auth,
   oneOf([
     [
       body('object').exists(),
@@ -128,10 +133,11 @@ router.post(
   sourceController.createSource
 );
 
-router.delete('/:id/bankaccount/:bank', sourceController.deleteSource);
+router.delete('/:id/bankaccount/:bank', auth, sourceController.deleteSource);
 
 router.post(
   '/:id/bankaccount/:bank/verify',
+  auth,
   [
     body('deposits.first').isInt({
       min: 1,

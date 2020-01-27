@@ -5,15 +5,17 @@ const router = express.Router();
 
 const paymentsController = require('../controllers/payments');
 const paymentController = require('../controllers/payment');
+const auth = require('../middleware/auth');
 
-router.get('/', paymentsController.getPayments);
+router.get('/', auth, paymentsController.getPayments);
 
 router.post(
   '/',
+  auth,
   [
     body('amount')
       .isLength({ max: 8 })
-      .isInt()
+      .toInt()
       .exists(),
     body('currency').exists(),
     body('receipt_email')
@@ -23,10 +25,10 @@ router.post(
   paymentsController.addPayment
 );
 
-router.get('/:id', paymentController.getPayment);
+router.get('/:id', auth, paymentController.getPayment);
 
-router.put('/:id', paymentController.updatePayment);
+router.put('/:id', auth, paymentController.updatePayment);
 
-router.post('/:id/refund', paymentController.refundPayment);
+router.post('/:id/refund', auth, paymentController.refundPayment);
 
 module.exports = router;
