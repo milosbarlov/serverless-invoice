@@ -1,7 +1,7 @@
 {
   "name": "serverless-invoice",
-  "version": "0.0.1",
-  "description": "A dashboard app of Serverless Invoice",
+  "version": "1.0.0",
+  "description": "Dashboard app for Serverless Invoice",
   "productName": "Dashboard",
   "cordovaId": "org.cordova.quasar.app",
   "author": "Kevin Chhay <25449974+Mirakurun@users.noreply.github.com>",
