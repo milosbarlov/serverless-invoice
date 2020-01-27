@@ -1,6 +1,6 @@
 const stripe = require('stripe')(process.env.SK_TEST);
 const { validationResult } = require('express-validator');
-const _ = require('lodash');
+// const _ = require('lodash');
 const chalk = require('chalk');
 
 const success = chalk.green;
@@ -14,16 +14,18 @@ exports.getCustomer = async (req, res, next) => {
     const customer = await stripe.customers.retrieve(req.params.id);
     console.log('Found customer...');
 
-    data.info = _.pick(customer, [
-      'id',
-      'created',
-      'default_source',
-      'description',
-      'email',
-      'invoice_prefix',
-      'shipping',
-      'sources',
-    ]);
+    // data.info = _.pick(customer, [
+    //   'id',
+    //   'created',
+    //   'default_source',
+    //   'description',
+    //   'email',
+    //   'invoice_prefix',
+    //   'shipping',
+    //   'sources',
+    // ]);
+
+    data.info = customer;
 
     const charges = await stripe.charges.list({
       customer: req.params.id,
@@ -31,18 +33,20 @@ exports.getCustomer = async (req, res, next) => {
     });
     console.log('Found charges...');
 
-    data.charges.data = _.map(charges.data, charge =>
-      _.pick(charge, [
-        'amount',
-        'created',
-        'currency',
-        'customer',
-        'description',
-        'id',
-        'status',
-        'receipt_email',
-      ])
-    );
+    // data.charges.data = _.map(charges.data, charge =>
+    //   _.pick(charge, [
+    //     'amount',
+    //     'created',
+    //     'currency',
+    //     'customer',
+    //     'description',
+    //     'id',
+    //     'status',
+    //     'receipt_email',
+    //   ])
+    // );
+
+    data.charges.data = charges.data;
 
     console.log(success('Fetched customer.'));
     res.status(200).json(data);

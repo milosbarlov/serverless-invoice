@@ -1,5 +1,6 @@
 const chalk = require('chalk');
-const Invoice = require('../models/invoice.js');
+const Invoice = require('../models/invoice');
+const { emailInvoice, emailReceipt } = require('../services/email');
 
 const success = chalk.green;
 
@@ -14,10 +15,11 @@ exports.getInvoices = async (req, res, next) => {
   } = req.query;
   const { filter, sortBy, status, startDate, endDate } = req.query || null;
   const descending = req.query.descending === 'true';
+  const pastDue = req.query.pastDue === 'true';
   const order = descending ? -1 : 1;
 
   try {
-    // Query invoice
+    // Create query instance
     const query = Invoice.find();
 
     // Filter
@@ -26,26 +28,35 @@ exports.getInvoices = async (req, res, next) => {
     }
 
     // Status
-    if (status) {
+    if (status !== 'all') {
       query.find({ status });
+    } else {
+      query.find({
+        status: { $in: ['draft', 'open', 'paid', 'uncollectible', 'void'] },
+      });
+    }
+
+    // Not past due
+    if (status === 'open' && !pastDue) {
+      query.find().gte('due_date', new Date().toISOString());
+    }
+
+    // Past due
+    if (pastDue) {
+      query.find().lt('due_date', new Date().toISOString());
     }
 
     // Date range
-    if (startDate && endDate) {
-      query
-        .find()
-        .where('createdAt')
-        .gte(startDate)
-        .lte(endDate);
-    } else {
-      if (startDate) {
-        query.find().gte('createdAt', startDate);
-      }
-      if (endDate) {
-        query.find().lte('createdAt', endDate);
-      }
+    if (startDate) {
+      query.find().gte('createdAt', new Date(startDate).toISOString());
+    }
+    if (endDate) {
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      query.find().lte('createdAt', end.toISOString());
     }
 
+    // Get total number of rows
     const rowsNumber = await Invoice.find(query.getFilter()).countDocuments();
 
     // Sort
@@ -56,6 +67,7 @@ exports.getInvoices = async (req, res, next) => {
     // Paginate
     query.skip((pageNum - 1) * rowsPerPageNum).limit(rowsPerPageNum);
 
+    // Execute query
     const invoices = await query.exec();
 
     console.log(success('Fetched invoices.'));
@@ -94,31 +106,46 @@ exports.getInvoice = async (req, res, next) => {
 exports.addInvoice = async (req, res, next) => {
   console.log('Adding invoice...');
   const form = req.body;
+  let number = '';
 
   try {
-    const totalDocs = await Invoice.find({
-      'customer.id': form.customer.id,
-    }).countDocuments();
+    if (form.status === 'draft') {
+      number = `${form.customer.invoice_prefix}-DRAFT`;
+    } else {
+      const totalDocs = await Invoice.find({
+        'customer.id': form.customer.id,
+        status: { $ne: 'draft' },
+      }).countDocuments();
 
-    const number = `${form.invoice_prefix}-${(totalDocs + 1)
-      .toString()
-      .padStart(4, '0')}`;
+      number = `${form.customer.invoice_prefix}-${(totalDocs + 1)
+        .toString()
+        .padStart(4, '0')}`;
+    }
 
     const invoice = new Invoice({
-      amount_due: form.amount_due,
-      amount_remaining: form.amount_due,
-      currency: form.currency,
       customer: form.customer,
       description: form.description,
       due_date: form.due_date,
+      footer: form.footer,
       lines: form.lines,
       number,
-      total: form.amount_due,
+      shippable: form.shippable,
+      shipping: form.shipping,
+      status: form.status,
+      subtotal: form.subtotal,
+      total: form.total,
     });
 
-    await invoice.save();
+    const result = await invoice.save();
     console.log(success('Added invoice.'));
-    res.status(201).json(invoice);
+
+    if (result.status_transitions.finalized_at) {
+      const message = await emailInvoice(result);
+
+      res.status(201).json({ message });
+    } else {
+      res.status(201).json({ message: 'Draft saved.' });
+    }
   } catch (error) {
     if (!error.statusCode) {
       error.statusCode = 500;
@@ -161,6 +188,38 @@ exports.deleteInvoice = async (req, res, next) => {
     console.log(success('Deleted invoice.'));
     res.status(200).json(invoice);
   } catch (error) {
-    console.error(error);
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
+  }
+};
+
+exports.payInvoice = async (req, res, next) => {
+  console.log('Paying invoice...');
+
+  const charge = req.body;
+  const id = req.params.id;
+
+  try {
+    const invoice = await Invoice.findById(id);
+
+    const result = await invoice.pay(charge);
+
+    if (result.status_transitions.paid_at) {
+      const message = await emailReceipt(result);
+
+      console.log(success('Paid invoice.'));
+      res.status(200).json({
+        message,
+        receipt: result.receipt_number,
+        email: result.customer.email,
+      });
+    }
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
   }
 };

@@ -15,43 +15,65 @@ exports.getCustomers = async (req, res, next) => {
     rowsPerPage,
     rowsPerPageNum = +rowsPerPage,
   } = req.query;
-  const { sortBy, filter, startDate, endDate } = req.query || '';
-  const descending = req.params.query === 'true';
+  const { sortBy, filter, startDate, endDate } = req.query;
+  const descending = req.query.descending === 'true';
   const data = { customers: [] };
 
   try {
+    let start;
+    let end;
+
+    if (startDate) {
+      start = new Date(startDate);
+      start = Math.floor(start.getTime() / 1000);
+    }
+
+    if (endDate) {
+      end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      end = Math.floor(end.getTime() / 1000);
+    }
+
     await stripe.customers
       .list({
         limit: 100,
         created: {
-          gte: startDate,
-          lte: endDate,
+          gte: start,
+          lte: end,
         },
       })
-      .autoPagingEach(async customer => {
-        const phoneNumber = parsePhoneNumberFromString(
-          customer.shipping.phone,
-          customer.shipping.address.country
-        );
+      .autoPagingEach(customer => {
+        // const phoneNumber = parsePhoneNumberFromString(
+        //   customer.shipping.phone,
+        //   customer.shipping.address.country
+        // );
 
-        data.customers.push({
-          date: customer.created,
-          id: customer.id,
-          description: customer.description,
-          email: customer.email,
-          country: customer.shipping.address.country,
-          phone: phoneNumber.formatInternational(),
-        });
+        // data.customers.push({
+        //   created: customer.created,
+        //   id: customer.id,
+        //   description: customer.description,
+        //   email: customer.email,
+        //   country: customer.shipping.address.country,
+        //   phone: phoneNumber.formatInternational(),
+        // });
+        data.customers.push(customer);
       });
 
     console.log('Found customers...');
 
     if (filter) {
       data.customers = data.customers.filter(customer => {
-        const keys = Object.keys(customer);
-        keys.shift();
+        // const keys = Object.keys(customer);
+        // keys.shift();
 
-        return keys.some(key => customer[key].includes(filter.toLowerCase()));
+        const keys = ['description', 'id', 'email'];
+
+        return keys.some(key => {
+          if (customer[key]) {
+            return customer[key].includes(filter.toLowerCase());
+          }
+          return false;
+        });
       });
     }
 
@@ -60,7 +82,7 @@ exports.getCustomers = async (req, res, next) => {
     const des = descending ? -1 : 1;
 
     if (sortBy) {
-      if (sortBy === 'date') {
+      if (sortBy === 'created') {
         data.customers.sort((a, b) => (a[sortBy] - b[sortBy]) * des);
       } else {
         data.customers.sort((a, b) => {
@@ -110,10 +132,23 @@ exports.addCustomer = async (req, res, next) => {
     req.body.shipping.address.country
   );
 
+  const formattedNumber = phoneNumber.formatInternational();
+
   try {
     const response = await stripe.customers.create({
-      description: req.body.customer_description,
+      address: {
+        line1: req.body.address.line1,
+        line2: req.body.address.line2,
+        city: req.body.address.city,
+        state: req.body.address.state,
+        postal_code: req.body.address.postal_code,
+        country: req.body.address.country,
+      },
+      currency: 'USD',
+      description: req.body.description,
       email: req.body.email,
+      name: req.body.name,
+      phone: req.body.phone,
       shipping: {
         address: {
           city: req.body.shipping.address.city,
@@ -124,7 +159,7 @@ exports.addCustomer = async (req, res, next) => {
           state: req.body.shipping.address.state,
         },
         name: req.body.shipping.name,
-        phone: phoneNumber.formatInternational(),
+        phone: formattedNumber || null,
       },
     });
 

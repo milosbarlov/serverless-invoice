@@ -13,37 +13,55 @@ exports.getPayments = async (req, res, next) => {
     rowsPerPage,
     rowsPerPageNum = +rowsPerPage,
   } = req.query;
-  const { sortBy, filter, startDate, endDate } = req.query || '';
+  const { sortBy, filter, startDate, endDate } = req.query;
   const descending = req.query.descending === 'true';
   const status = req.query.status ? req.query.status : [];
   const data = { payments: [] };
 
   try {
+    let start;
+    let end;
+
+    if (startDate) {
+      start = new Date(startDate);
+      start = Math.floor(start.getTime() / 1000);
+    }
+
+    if (endDate) {
+      end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      end = Math.floor(end.getTime() / 1000);
+    }
+
     await stripe.charges
       .list({
         limit: 100,
         created: {
-          gte: startDate,
-          lte: endDate,
+          gte: start,
+          lte: end,
         },
       })
       .autoPagingEach(async payment => {
         data.payments.push({
           amount: payment.amount,
+          amountRefunded: payment.amount_refunded,
+          created: payment.created,
           currency: payment.currency,
-          status: payment.status,
           description: payment.description,
           id: payment.id,
           receipt_email: payment.receipt_email,
-          created: payment.created,
+          refunded: payment.refunded,
+          status: payment.status,
         });
       });
 
     console.log('Found payments...');
 
     if (status.length > 0) {
-      data.payments = data.payments.filter(payment =>
-        status.includes(payment.status)
+      data.payments = data.payments.filter(
+        payment =>
+          (status.includes(payment.status) && !payment.refunded) ||
+          (status.includes('refunded') && payment.refunded)
       );
     }
 
@@ -60,7 +78,7 @@ exports.getPayments = async (req, res, next) => {
     const des = descending ? -1 : 1;
 
     if (sortBy) {
-      if (sortBy === 'date') {
+      if (sortBy === 'created') {
         data.payments.sort((a, b) => (a[sortBy] - b[sortBy]) * des);
       } else {
         data.payments.sort((a, b) => {

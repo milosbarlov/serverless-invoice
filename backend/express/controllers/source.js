@@ -14,6 +14,7 @@ exports.createSource = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
+    console.error(errors.array());
     const error = new Error('Invalid input.');
     error.statusCode = 422;
     throw error;
