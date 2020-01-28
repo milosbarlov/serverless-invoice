@@ -135,7 +135,10 @@ export default {
         unit_amount: '',
       },
       options: ['$', '%'],
-      typeOptions: [{ label: '$', value: '$' }, { label: '%', value: '%' }],
+      typeOptions: [
+        { label: '$', value: '$' },
+        { label: '%', value: '%' },
+      ],
     };
   },
   computed: {
@@ -171,9 +174,6 @@ export default {
       this.toggleDialog = false;
     },
   },
-  // created() {
-  //   this.form = { ...this.$store.state.invoices.item };
-  // },
 };
 </script>
 
