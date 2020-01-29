@@ -1,4 +1,4 @@
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+const parsePhoneNumberFromString = require('libphonenumber-js');
 
 const stripe = require('stripe')(process.env.SK_TEST);
 const { validationResult } = require('express-validator');
