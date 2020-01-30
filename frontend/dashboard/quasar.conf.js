@@ -118,9 +118,11 @@ module.exports = function(ctx) {
       env: ctx.dev
         ? {
             API: JSON.stringify('http://192.168.1.2:3000'),
+            STRIPE_KEY: JSON.stringify('pk_test_GfqdcTRY5WTeKzKhV3X3RztR'),
           }
         : {
-            API: JSON.stringify('https://prod.api.com'),
+            API: JSON.stringify('https://mirakurun.dev/apps/serverless-invoice/api'),
+            STRIPE_KEY: JSON.stringify('pk_test_GfqdcTRY5WTeKzKhV3X3RztR'),
           },
     },
 
