@@ -18,7 +18,7 @@
           </router-link>
         </q-toolbar-title>
 
-        <q-tabs inline-label shrink stretch>
+        <q-tabs class="gt-xs" inline-label shrink stretch>
           <q-btn
             flat
             stretch
@@ -59,8 +59,88 @@
             <div>dashboard</div>
           </q-btn>
         </q-tabs>
+
+        <q-btn
+          flat
+          dense
+          round
+          class="lt-sm"
+          @click="drawer = !drawer"
+          aria-label="Menu"
+          icon="menu"
+        >
+        </q-btn>
       </q-toolbar>
     </q-header>
+
+    <q-drawer content-class="bg-grey-3" overlay side="right" v-model="drawer">
+      <q-list>
+        <q-item
+          clickable
+          tag="a"
+          href="https://github.com/Mirakurun/serverless-invoice"
+          target="_blank"
+          rel="noopener"
+        >
+          <q-item-section avatar>
+            <q-icon name="fab fa-github fa-fw" style="color: #24292e" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-2b">Github</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-icon
+              name="fas fa-external-link-alt fa-fw"
+              color="grey"
+              size="16px"
+            />
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          tag="a"
+          href="https://www.linkedin.com/in/kevin-chhay/"
+          target="_blank"
+          rel="noopener"
+        >
+          <q-item-section avatar>
+            <q-icon name="fab fa-linkedin fa-fw" style="color: #0077b5" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-2b">LinkedIn</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-icon
+              name="fas fa-external-link-alt fa-fw"
+              color="grey"
+              size="16px"
+            />
+          </q-item-section>
+        </q-item>
+        <q-separator />
+        <q-item clickable to="/login" v-if="$store.state.auth.token === null">
+          <q-item-section avatar>
+            <q-icon color="cyan" name="fas fa-sign-in-alt fa-fw" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-2b">Login</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item
+          @click="drawer = !drawer"
+          clickable
+          to="/dashboard"
+          v-if="$store.state.auth.token !== null"
+        >
+          <q-item-section avatar>
+            <q-icon color="cyan" name="fas fa-arrow-right fa-fw" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-2b">Dashboard</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-drawer>
 
     <q-page-container>
       <router-view />
@@ -71,6 +151,11 @@
 <script>
 export default {
   name: 'HomeLayout',
+  data() {
+    return {
+      drawer: false,
+    };
+  },
 };
 </script>
 

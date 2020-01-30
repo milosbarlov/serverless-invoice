@@ -10,14 +10,7 @@
           round
           v-if="$route.meta.backBtn && $q.screen.lt.md"
         />
-        <q-btn
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          dense
-          flat
-          icon="menu"
-          round
-          v-else
-        />
+        <q-btn @click="drawer = !drawer" dense flat icon="menu" round v-else />
 
         <q-toolbar-title>
           {{ $q.screen.lt.md ? $route.meta.title : 'Serverless Invoice' }}
@@ -69,9 +62,11 @@
     </q-header>
 
     <q-drawer
-      v-model="leftDrawerOpen"
+      :breakpoint="1040"
+      show-if-above
       content-class="bg-grey-10"
       v-if="!$store.state.layout.fullscreen"
+      v-model="drawer"
     >
       <q-list class="text-grey-5" dark>
         <q-item to="/dashboard" clickable exact active-class="active-menu-link">
@@ -114,9 +109,9 @@
             <q-item-label>Settings</q-item-label>
           </q-item-section>
         </q-item>
-        <q-separator class="lt-md" dark />
+        <q-separator v-if="$q.platform.is.mobile" dark />
         <q-item
-          class="lt-md"
+          v-if="$q.platform.is.mobile"
           clickable
           tag="a"
           href="https://github.com/Mirakurun/serverless-invoice"
@@ -136,7 +131,28 @@
             />
           </q-item-section>
         </q-item>
-        <q-item class="lt-md" clickable @click="logout">
+        <q-item
+          v-if="$q.platform.is.mobile"
+          clickable
+          tag="a"
+          href="https://www.linkedin.com/in/kevin-chhay/"
+          target="_blank"
+        >
+          <q-item-section avatar>
+            <q-icon name="fab fa-linkedin fa-fw" color="grey-5" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>LinkedIn</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-icon
+              name="fas fa-external-link-alt fa-fw"
+              color="grey"
+              size="16px"
+            />
+          </q-item-section>
+        </q-item>
+        <q-item v-if="$q.platform.is.mobile" clickable @click="logout">
           <q-item-section avatar>
             <q-icon name="fas fa-sign-out-alt fa-fw" color="grey-5" />
           </q-item-section>
@@ -160,7 +176,7 @@ export default {
   name: 'DashboardLayout',
   data() {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop,
+      drawer: false,
     };
   },
   methods: {

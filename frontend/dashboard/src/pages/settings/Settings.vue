@@ -1,19 +1,21 @@
 <template>
   <q-page
-    :class="{
-      'bread-crumb-padding': $q.screen.gt.sm,
-      flex: true,
-      'flex-center': true,
-    }"
+    :class="[
+      {
+        'bread-crumb-padding': $q.screen.gt.sm,
+      },
+      'flex',
+      'flex-center',
+    ]"
     :padding="!$q.platform.is.mobile"
   >
     <q-card
-      :class="{
-        'text-2b': true,
-        'full-width': $q.platform.is.mobile || $q.screen.lt.sm,
-        'window-height': $q.platform.is.mobile || $q.screen.lt.sm,
-        'w-500px': !$q.platform.is.mobile,
-      }"
+      :class="[
+        'text-2b',
+        { 'full-width': $q.platform.is.mobile || $q.screen.lt.sm },
+        { 'window-height': $q.platform.is.mobile || $q.screen.lt.sm },
+        { 'w-500px': !$q.platform.is.mobile },
+      ]"
       :flat="$q.platform.is.mobile"
     >
       <q-card-section class="gt-sm">

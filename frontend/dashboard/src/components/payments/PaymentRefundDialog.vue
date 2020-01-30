@@ -26,6 +26,7 @@
           <!-- Amount -->
           <q-input
             @change="$v.form.amount.$touch"
+            color="cyan"
             bottom-slots
             :error="$v.form.amount.$error"
             :error-message="error"
@@ -40,6 +41,7 @@
           <!-- Reason -->
           <q-select
             bottom-slots
+            color="cyan"
             emit-value
             :error="$v.form.reason.$error"
             :error-message="'Please select a reason.'"
@@ -66,9 +68,9 @@
           outline
           @click="toggleDialog = false"
           label="cancel"
-          color="primary"
+          color="cyan"
         />
-        <q-btn @click="refund" color="primary" label="Refund" />
+        <q-btn @click="refund" color="cyan" label="Refund" />
       </q-card-actions>
     </q-card>
   </q-dialog>

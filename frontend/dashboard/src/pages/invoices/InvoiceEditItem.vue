@@ -2,11 +2,11 @@
   <q-page :padding="!$q.platform.is.mobile">
     <div class="row justify-center">
       <q-card
-        :class="{
-          'text-2b': true,
-          'full-width': $q.platform.is.mobile,
-          'w-500px': !$q.platform.is.mobile,
-        }"
+        :class="[
+          'text-2b',
+          { 'full-width': $q.platform.is.mobile },
+          { 'w-500px': !$q.platform.is.mobile },
+        ]"
         :flat="$q.platform.is.mobile"
       >
         <q-card-section>

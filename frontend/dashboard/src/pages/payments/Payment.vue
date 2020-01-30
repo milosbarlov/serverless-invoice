@@ -1,6 +1,6 @@
 <template>
   <q-page
-    :class="{ 'bread-crumb-padding': $q.screen.gt.sm, container: true }"
+    :class="[{ 'bread-crumb-padding': $q.screen.gt.sm }, 'container']"
     :padding="!$q.platform.is.mobile"
   >
     <div class="q-gutter-y-md">

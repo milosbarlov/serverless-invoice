@@ -1,10 +1,12 @@
 <template>
   <q-page
-    :class="{
-      'bread-crumb-padding': $q.screen.gt.sm,
-      flex: true,
-      'flex-center': true,
-    }"
+    :class="[
+      {
+        'bread-crumb-padding': $q.screen.gt.sm,
+      },
+      'flex',
+      'flex-center',
+    ]"
     :padding="!$q.platform.is.mobile"
   >
     <q-card

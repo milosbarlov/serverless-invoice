@@ -44,6 +44,7 @@
           <q-input
             dense
             @change="$v.form.amount.$touch"
+            color="cyan"
             bottom-slots
             :error="$v.form.amount.$error"
             error-message="Minimum charge amount is $0.50"
@@ -57,6 +58,7 @@
           />
           <!-- Payment method -->
           <q-select
+            color="cyan"
             dense
             filled
             v-if="$route.name === 'customer-profile'"
@@ -88,6 +90,7 @@
           <card-element v-else />
           <!-- Description -->
           <q-input
+            color="cyan"
             dense
             outlined
             v-model.trim="form.description"

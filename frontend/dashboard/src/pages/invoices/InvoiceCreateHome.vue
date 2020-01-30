@@ -1,6 +1,6 @@
 <template>
   <q-page
-    :class="{ 'bread-crumb-padding': $q.screen.gt.sm, container: true }"
+    :class="[{ 'bread-crumb-padding': $q.screen.gt.sm }, 'container']"
     :padding="!$q.platform.is.mobile"
   >
     <q-card class="text-2b">
@@ -138,7 +138,7 @@
                 <q-item-section avatar>
                   <q-toggle
                     class="lt-sm"
-                    color="primary"
+                    color="cyan"
                     icon="local_shipping"
                     left-label
                     v-model="form.shippable"
@@ -253,6 +253,7 @@
             </q-input>
 
             <q-field
+              color="cyan"
               class="cursor-pointer lt-sm"
               dense
               filled
@@ -260,7 +261,7 @@
               :stack-label="form.due_date !== ''"
             >
               <template #prepend>
-                <q-icon color="primary" name="event" />
+                <q-icon color="cyan" name="event" />
               </template>
               <template #append>
                 <q-icon
@@ -278,6 +279,7 @@
 
               <q-popup-proxy ref="dueDatePopup" :breakpoint="600">
                 <q-date
+                  color="cyan"
                   @input="() => $refs.dueDatePopup.hide()"
                   v-model="form.due_date"
                 />
@@ -664,7 +666,7 @@
           class="full-width"
           icon="add_circle"
           label="add item"
-          text-color="primary"
+          text-color="cyan"
           unelevated
         />
         <q-list>
@@ -693,7 +695,7 @@
           </q-item>
           <q-item :to="{ name: 'add-shipping' }" clickable v-ripple>
             <q-item-section>
-              <q-item-label class="text-subtitle1 text-primary">
+              <q-item-label class="text-subtitle1 text-cyan">
                 Add shipping <q-icon name="add" />
               </q-item-label>
             </q-item-section>
