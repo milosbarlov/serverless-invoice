@@ -32,7 +32,6 @@ export default {
         next();
       }
     } catch (error) {
-      console.error(error);
       notifyError(axiosError(error));
       next('*');
     } finally {

@@ -39,7 +39,6 @@ export const asyncUpdatePayments = async ({ commit, rootState }, payload) => {
       commit('setRowsNumber', response.data.rowsNumber);
     }
   } catch (error) {
-    console.error(error);
     notifyError(axiosError(error));
   } finally {
     commit('setLoading', false);

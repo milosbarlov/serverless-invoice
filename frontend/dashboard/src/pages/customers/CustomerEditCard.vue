@@ -276,7 +276,6 @@ export default {
           });
         }
       } catch (error) {
-        console.error(error);
         this.message = axiosError(error);
       } finally {
         this.$q.loading.hide();

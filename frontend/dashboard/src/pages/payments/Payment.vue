@@ -314,7 +314,6 @@ export default {
         });
       }
     } catch (error) {
-      console.error(error);
       notifyError(axiosError(error));
       next('*');
     } finally {

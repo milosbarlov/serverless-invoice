@@ -287,7 +287,6 @@ export default {
           this.form = response.data;
         }
       } catch (error) {
-        console.error(error);
         this.message = axiosError(error);
       }
     },
@@ -332,7 +331,6 @@ export default {
           notifySuccess('Updated settings.');
         }
       } catch (error) {
-        console.error(error);
         this.message = axiosError(error);
       } finally {
         this.$q.loading.hide();

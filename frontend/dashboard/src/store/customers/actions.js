@@ -34,7 +34,6 @@ export const asyncUpdateCustomers = async ({ commit, rootState }, payload) => {
       commit('setRowsNumber', response.data.rowsNumber);
     }
   } catch (error) {
-    console.error(error);
     notifyError(axiosError(error));
   } finally {
     commit('setLoading', false);
@@ -60,7 +59,6 @@ export const asyncUpdateCustomer = async ({ commit, rootState }, payload) => {
       commit('setCustomer', response.data);
     }
   } catch (error) {
-    console.error(error);
     notifyError(axiosError(error));
   } finally {
     Loading.hide();

@@ -1,5 +1,6 @@
 import { axiosInstance } from 'boot/axios';
 import { axiosError, notifyError } from 'utils/error-handler';
+import { notifySuccess } from 'utils/success-handler';
 import { Loading, QSpinner } from 'quasar';
 
 let timeout;
@@ -18,10 +19,9 @@ export async function signup(payload) {
     const { data, status } = await axiosInstance.post('/auth/signup', params);
 
     if (status === 201) {
-      console.log(data.message);
+      notifySuccess(data.message);
     }
   } catch (error) {
-    console.error(error);
     notifyError(axiosError(error));
   }
 }

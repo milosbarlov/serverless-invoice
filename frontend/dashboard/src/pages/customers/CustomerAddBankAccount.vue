@@ -221,7 +221,6 @@ export default {
       );
 
       if (error) {
-        console.error(error);
         this.message = error;
         this.$q.loading.hide();
       } else {
@@ -249,7 +248,6 @@ export default {
           });
         }
       } catch (error) {
-        console.error(error);
         this.message = axiosError(error);
       } finally {
         this.$q.loading.hide();

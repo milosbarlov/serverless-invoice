@@ -915,7 +915,6 @@ export default {
           this.business_info = response.data;
         }
       } catch (error) {
-        console.error(error);
         this.message = axiosError(error);
       }
     },
@@ -945,7 +944,6 @@ export default {
           this.$store.commit('invoices/setLines', data.lines);
         }
       } catch (error) {
-        console.error(error);
         this.message = axiosError(error);
       }
     },
@@ -1004,7 +1002,6 @@ export default {
 
         this.$router.back();
       } catch (error) {
-        console.error(error);
         this.message = axiosError(error);
       } finally {
         this.$q.loading.hide();
@@ -1034,7 +1031,6 @@ export default {
 
         this.$router.back();
       } catch (error) {
-        console.error(error);
         this.message = axiosError(error);
       } finally {
         this.$q.loading.hide();

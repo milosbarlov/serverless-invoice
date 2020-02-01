@@ -193,7 +193,6 @@ export default {
           this.toggleDialog = false;
         }
       } catch (error) {
-        console.error(error);
         this.message = axiosError(error);
       } finally {
         this.$q.loading.hide();
@@ -225,7 +224,6 @@ export default {
       const { error, token } = await this.$stripe.createToken(this.getElement);
 
       if (error) {
-        console.error(error);
         this.message = 'Please check the errors below.';
         this.updateError(error.message);
         this.$q.loading.hide();

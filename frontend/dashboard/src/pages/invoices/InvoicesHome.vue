@@ -102,7 +102,6 @@ export default {
           this.pagination.rowsNumber = response.data.rowsNumber;
         }
       } catch (error) {
-        console.error(error);
         notifyError(axiosError(error));
       } finally {
         this.loading = false;

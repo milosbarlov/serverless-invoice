@@ -48,6 +48,7 @@ import BreadCrumbs from 'components/BreadCrumbs.vue';
 import Highcharts from 'highcharts';
 import { Chart } from 'highcharts-vue';
 import qs from 'qs';
+import { axiosError, notifyError } from 'utils/error-handler';
 import {
   differenceInHours,
   differenceInCalendarDays,
@@ -419,7 +420,7 @@ export default {
           this.chartOptions.series[0].data = grossVolume;
         }
       } catch (error) {
-        console.error(error);
+        notifyError(axiosError(error));
       }
     },
     interval(startDate, endDate, unit) {
