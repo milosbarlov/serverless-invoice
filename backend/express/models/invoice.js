@@ -44,7 +44,7 @@ const invoiceSchema = new Schema(
     hosted_invoice_url: {
       type: String,
       default() {
-        return `${process.env.API}/checkout/${this._id}`;
+        return `${process.env.INVOICE_URL}/${this._id}`;
       },
     },
     lines: { type: Object, default: null },
