@@ -121,7 +121,7 @@ module.exports = function(ctx) {
             STRIPE_KEY: JSON.stringify('pk_test_GfqdcTRY5WTeKzKhV3X3RztR'),
           }
         : {
-            API: JSON.stringify('https://mirakurun.dev/apps/serverless-invoice/api'),
+            API: JSON.stringify('https://serverless-invoice.mirakurun.dev/api'),
             STRIPE_KEY: JSON.stringify('pk_test_GfqdcTRY5WTeKzKhV3X3RztR'),
           },
     },
