@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const { mongoose } = require('./db/mongoose');
 
 const customersRouter = require('./routes/customers');
 const paymentsRouter = require('./routes/payments');
@@ -21,13 +20,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/customers', customersRouter);
-app.use('/payments', paymentsRouter);
-app.use('/invoices', invoicesRouter);
-app.use('/settings', settingsRouter);
-app.use('/auth', authRouter);
-app.use('/checkout', checkoutRouter);
-app.use('/chart', chartRouter);
+app.use('/api/customers', customersRouter);
+app.use('/api/payments', paymentsRouter);
+app.use('/api/invoices', invoicesRouter);
+app.use('/api/settings', settingsRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/checkout', checkoutRouter);
+app.use('/api/chart', chartRouter);
 
 // Express error handler middleware
 app.use((error, req, res, next) => {
