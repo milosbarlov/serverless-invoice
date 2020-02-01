@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const { mongoose } = require('./db/mongoose');
 const app = require('./app');
 
 const success = chalk.green;
