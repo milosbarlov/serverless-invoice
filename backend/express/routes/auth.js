@@ -16,16 +16,19 @@ router.post(
       .trim()
       .not()
       .isEmpty()
-      .custom(value => {
-        return User.findOne({ username: value }).then(user => {
-          if (user) {
-            return Promise.reject('Username already exists!');
-          }
-        });
-      }),
+      .withMessage('Username is empty!')
+      .custom(async value => {
+        const user = await User.findOne({ username: value });
+
+        if (user) {
+          return Promise.reject();
+        }
+      })
+      .withMessage('Username already exists!'),
     body('password')
       .trim()
-      .isLength({ min: 6 }),
+      .isLength({ min: 6 })
+      .withMessage('Must be at least 6 characters long!'),
   ],
   authController.signup
 );
