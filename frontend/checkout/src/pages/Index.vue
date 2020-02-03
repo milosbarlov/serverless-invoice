@@ -99,6 +99,7 @@
             PAID
           </div>
           <q-btn
+            @click="pay"
             class="full-width q-mt-lg"
             color="primary"
             no-caps
@@ -139,7 +140,7 @@ export default {
 
     try {
       const { status, data } = await axiosInstance.get(
-        `/checkout/${to.params.id}`
+        `${process.env.API}/checkout/${to.params.id}`
       );
 
       if (status === 200) {
