@@ -57,7 +57,7 @@ export async function login({ state, commit, dispatch }, payload) {
       }
       commit('setError', '');
       dispatch('setLogoutTimer', data.expiresIn);
-      this.$router.push({ name: 'dashboard' });
+      this.$router.push('/dashboard').catch(err => err);
     }
   } catch (error) {
     commit('setError', error.response.data.message);
