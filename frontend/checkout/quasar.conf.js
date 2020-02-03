@@ -114,7 +114,7 @@ module.exports = function (ctx) {
             API: JSON.stringify('http://192.168.1.2:3000'),
           }
         : {
-            API: JSON.stringify('https://prod.api.com'),
+            API: JSON.stringify('https://serverless-invoice.mirakurun.dev/api'),
           },
     },
 
