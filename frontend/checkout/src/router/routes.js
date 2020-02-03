@@ -1,10 +1,8 @@
 const routes = [
-  { path: '', redirect: 'checkout' },
   {
-    path: '/checkout',
+    path: '',
     component: () => import('layouts/ClientPortalLayout.vue'),
     children: [
-      { path: '', redirect: 'checkout' },
       {
         name: 'confirmation',
         path: 'confirmation',
