@@ -117,7 +117,7 @@ module.exports = function(ctx) {
       },
       env: ctx.dev
         ? {
-            API: JSON.stringify('http://192.168.1.2:3000'),
+            API: JSON.stringify('http://192.168.1.2:3000/api'),
             STRIPE_KEY: JSON.stringify('pk_test_GfqdcTRY5WTeKzKhV3X3RztR'),
           }
         : {
