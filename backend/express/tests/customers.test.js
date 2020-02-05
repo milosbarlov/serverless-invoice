@@ -3,26 +3,30 @@ const app = require('../app');
 
 test('Get all customers', async () => {
   try {
-    await request(app)
+    const response = await request(app)
       .get('/customers')
       .expect(200);
+
+    expect(typeof response.body.customers).toBe('object');
   } catch (error) {
     console.error(error);
   }
 });
 
-test('Get first 10 customers', async () => {
+test('Get 10 customers or less', async () => {
   try {
-    await request(app)
+    const response = await request(app)
       .get('/customers')
-      .query({ descending: true, page: 1, rowsPerPage: 10, sortBy: 'date' })
+      .query({ descending: true, page: 1, rowsPerPage: 10, sortBy: 'created' })
       .expect(200);
+
+    expect(response.body.customers.length).toBeLessThanOrEqual(10);
   } catch (error) {
     console.error(error);
   }
 });
 
-describe('New customer', () => {
+describe('Creating a new customer', () => {
   let customer = '';
 
   test('Add customer', async () => {
@@ -30,8 +34,18 @@ describe('New customer', () => {
       const response = await request(app)
         .post('/customers')
         .send({
+          address: {
+            line1: '123 Fake Street',
+            line2: 'Apt 4',
+            city: 'Fake',
+            state: 'TX',
+            postal_code: '56879',
+            country: 'US',
+          },
           description: 'test',
           email: 'test@test.com',
+          name: 'Some Guy',
+          phone: '(888) 123-4567',
           shipping: {
             address: {
               line1: '123 Fake Street',
@@ -47,6 +61,8 @@ describe('New customer', () => {
         })
         .expect(201);
 
+      expect(response.body.object).toBe('customer');
+
       customer = response.body.id;
     } catch (error) {
       console.error(error);
@@ -59,7 +75,7 @@ describe('New customer', () => {
         .get(`/customers/${customer}`)
         .expect(200);
 
-      expect(customer).toBe(response.body.info.id);
+      expect(response.body.info.id).toBe(customer);
     } catch (error) {
       console.error(error);
     }
@@ -101,14 +117,14 @@ describe('New customer', () => {
         .del(`/customers/${customer}`)
         .expect(200);
 
-      expect(customer).toBe(response.body.id);
+      expect(response.body.id).toBe(customer);
     } catch (error) {
       console.error(error);
     }
   });
 });
 
-describe('New card', () => {
+describe('Creating a new card', () => {
   let card = '';
 
   test('Add card', async () => {
@@ -154,7 +170,7 @@ describe('New card', () => {
   });
 });
 
-describe('New bank account', () => {
+describe('Creating a new bank account', () => {
   let bank = '';
 
   test('Add bank account', async () => {

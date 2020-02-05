@@ -3,17 +3,19 @@ const app = require('../app');
 
 test('Get invoices', async () => {
   try {
-    await request(app)
+    const response = await request(app)
       .get('/invoices')
       .expect(200);
+
+    expect(typeof response.body.invoices).toBe('object');
   } catch (error) {
     console.error(error);
   }
 });
 
-test('Get first 10 invoices', async () => {
+test('Get 10 invoices or less', async () => {
   try {
-    await request(app)
+    const response = await request(app)
       .get('/invoices')
       .query({
         descending: true,
@@ -22,12 +24,14 @@ test('Get first 10 invoices', async () => {
         sortBy: 'createdAt',
       })
       .expect(200);
+
+    expect(response.body.invoices.length).toBeLessThanOrEqual(10);
   } catch (error) {
     console.error(error);
   }
 });
 
-describe('New invoice', () => {
+describe('Creating a new invoice', () => {
   let invoice = '';
 
   test('Add invoice', async () => {
@@ -35,14 +39,18 @@ describe('New invoice', () => {
       const response = await request(app)
         .post('/invoices')
         .send({
-          amount_due: 100,
-          currency: 'usd',
           customer: {
             id: 'cus_test',
+            invoice_prefix: 'ABCDEF',
           },
-          invoice_prefix: 'ABCDEF',
+          shippable: true,
+          shipping: '0',
+          subtotal: '100',
+          total: '100',
         })
         .expect(201);
+
+      expect(response.body.object).toBe('invoice');
 
       invoice = response.body._id;
     } catch (error) {
@@ -56,7 +64,7 @@ describe('New invoice', () => {
         .get(`/invoices/${invoice}`)
         .expect(200);
 
-      expect(invoice).toBe(response.body._id);
+      expect(response.body._id).toBe(invoice);
     } catch (error) {
       console.error(error);
     }

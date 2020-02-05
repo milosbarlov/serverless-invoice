@@ -3,32 +3,36 @@ const app = require('../app');
 
 test('Get all payments', async () => {
   try {
-    await request(app)
+    const response = await request(app)
       .get('/payments')
       .expect(200);
+
+    expect(typeof response.body.payments).toBe('object');
   } catch (error) {
     console.error(error);
   }
 });
 
-test('Get first 10 payments', async () => {
+test('Get 10 payments or less', async () => {
   try {
-    await request(app)
+    const response = await request(app)
       .get('/payments')
       .query({
         descending: true,
         page: 1,
         rowsPerPage: 10,
-        sortBy: 'date',
+        sortBy: 'created',
         status: ['succeeded'],
       })
       .expect(200);
+
+    expect(response.body.payments.length).toBeLessThanOrEqual(10);
   } catch (error) {
     console.error(error);
   }
 });
 
-describe('New payment', () => {
+describe('Creating a new payment', () => {
   let payment = '';
 
   test('Add payment', async () => {
