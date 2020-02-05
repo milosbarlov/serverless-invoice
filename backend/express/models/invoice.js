@@ -49,6 +49,7 @@ const invoiceSchema = new Schema(
     },
     lines: { type: Object, default: null },
     number: { type: String, required: true },
+    Object: { type: String, default: 'invoice' },
     paid: { type: Boolean, default: false },
     payment_method_details: { type: Object, default: null },
     receipt_number: { type: String, default: null },
