@@ -7,9 +7,10 @@
 1. Domain name
 2. [AWS account](https://aws.amazon.com/)
 3. [Unsanboxed Amazon SES account](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/request-production-access.html)
-4. [Stripe account](https://stripe.com/)
-5. [MongoDB Atlas account](https://www.mongodb.com/cloud/atlas)
-6. [Node.js](https://nodejs.org/en/)
+4. [Verify your domain](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-domains.html)
+5. [Stripe account](https://stripe.com/)
+6. [MongoDB Atlas account](https://www.mongodb.com/cloud/atlas)
+7. [Node.js](https://nodejs.org/en/)
 
 ## Installation
 
