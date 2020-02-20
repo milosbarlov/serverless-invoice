@@ -6,4 +6,8 @@ jspm_packages
 .serverless
 
 # Config directories
-config
+config/*
+!config/config.example.js
+!config/dev.example.env
+!config/env.example.yml
+!config/test.example.env
