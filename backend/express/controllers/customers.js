@@ -43,19 +43,6 @@ exports.getCustomers = async (req, res, next) => {
         },
       })
       .autoPagingEach(customer => {
-        // const phoneNumber = parsePhoneNumberFromString(
-        //   customer.shipping.phone,
-        //   customer.shipping.address.country
-        // );
-
-        // data.customers.push({
-        //   created: customer.created,
-        //   id: customer.id,
-        //   description: customer.description,
-        //   email: customer.email,
-        //   country: customer.shipping.address.country,
-        //   phone: phoneNumber.formatInternational(),
-        // });
         data.customers.push(customer);
       });
 
@@ -63,9 +50,6 @@ exports.getCustomers = async (req, res, next) => {
 
     if (filter) {
       data.customers = data.customers.filter(customer => {
-        // const keys = Object.keys(customer);
-        // keys.shift();
-
         const keys = ['description', 'id', 'email'];
 
         return keys.some(key => {
