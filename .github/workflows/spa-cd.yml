@@ -15,6 +15,9 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+    defaults:
+      run:
+        working-directory: ./frontend/dashboard
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -22,8 +25,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - name: Change directory
-        run: cd frontend/dashboard
       - name: Install dependencies
         run: npm ci
       - name: Install AWS CLI
