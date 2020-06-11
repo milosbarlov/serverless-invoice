@@ -22,6 +22,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - name: Change directory
+        run: cd frontend/dashboard
       - name: Install dependencies
         run: npm ci
       - name: Install AWS CLI
