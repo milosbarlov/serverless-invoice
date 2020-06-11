@@ -13,6 +13,11 @@
         <q-card-section>
           <div class="text-h4 text-center q-my-md">Log In</div>
         </q-card-section>
+        <q-banner>
+          <div class="text-bold text-red">Guest</div>
+          <div>username: dummy</div>
+          <div>password: sample</div>
+        </q-banner>
         <q-card-section>
           <div class="q-gutter-y-md">
             <alert
