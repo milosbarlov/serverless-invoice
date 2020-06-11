@@ -126,8 +126,3 @@ export default {
   },
 };
 </script>
-
-<style lang="stylus" scoped>
-.w-500px
-  width 500px
-</style>
