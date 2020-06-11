@@ -1,14 +1,9 @@
 <template>
   <q-page class="flex flex-center" :padding="!$q.platform.is.mobile">
-    <form @submit.prevent="login">
+    <form @submit.prevent="login" style="width: 100%; max-width: 580px;">
       <q-card
-        :class="{
-          'text-2b': true,
-          'full-width': $q.platform.is.mobile || $q.screen.lt.sm,
-          'window-height': $q.platform.is.mobile || $q.screen.lt.sm,
-          'w-500px': !$q.platform.is.mobile,
-        }"
-        :flat="$q.platform.is.mobile"
+        :class="['text-2b', { 'window-height': $q.screen.lt.sm }]"
+        :flat="$q.screen.lt.sm"
       >
         <q-card-section>
           <div class="text-h4 text-center q-my-md">Log In</div>
