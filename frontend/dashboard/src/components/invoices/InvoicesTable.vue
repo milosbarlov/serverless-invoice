@@ -279,7 +279,12 @@ export default {
           align: 'left',
           field: 'currency',
           sortable: true,
-          format: (value, row) => row.customer.currency.toUpperCase(),
+          format: (value, row) => {
+            if (row.customer) {
+              return row.customer.currency.toUpperCase();
+            }
+            return 'N/A';
+          },
         },
         {
           name: 'status',

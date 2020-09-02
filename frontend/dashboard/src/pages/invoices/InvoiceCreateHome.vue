@@ -731,8 +731,20 @@
           outline
           label="cancel"
         />
-        <q-btn @click="save" color="purple" icon="save" label="save draft" />
-        <q-btn @click="send" color="cyan" icon="email" label="send" />
+        <q-btn
+          @click="save"
+          color="purple"
+          icon="save"
+          label="save draft"
+          :disable="!form.customer"
+        />
+        <q-btn
+          @click="send"
+          color="cyan"
+          icon="email"
+          label="send"
+          :disable="!form.customer && form.total === '0'"
+        />
       </q-card-actions>
     </q-card>
 
@@ -1115,17 +1127,21 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.container
-  max-width 1200px
-  margin-left auto
-  margin-right auto
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-.q-table td::before
-  background none
+.q-table td::before {
+  background: none;
+}
 
-.q-table th:first-child, .q-table td:first-child
-  padding-left 0px
+.q-table th:first-child, .q-table td:first-child {
+  padding-left: 0px;
+}
 
-.q-table th:last-child, .q-table td:last-child
-  padding-right 0px
+.q-table th:last-child, .q-table td:last-child {
+  padding-right: 0px;
+}
 </style>
