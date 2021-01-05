@@ -14,7 +14,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.1",
     "@quasar/extras": "^1.5.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "countries-list": "^2.4.2",
     "date-fns": "^2.9.0",
     "highcharts": "^8.0.0",
